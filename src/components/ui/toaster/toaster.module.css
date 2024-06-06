@@ -1,0 +1,23 @@
+.container {
+  border: 1px solid #FFD4C5;
+  border-radius: 8px;
+  padding:2px;
+}
+
+.container__box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background-color: #FFD4C5; */
+  padding:4px 6px;
+  border-radius: 8px;
+  border: 1px solid #FFFF;
+}
+
+
+.container__box__message {
+  font-family: "Poppins", sans;
+  font-size: 14px;
+  font-weight: 500;
+  color: #FFFF;
+}

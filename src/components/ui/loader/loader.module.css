@@ -1,0 +1,64 @@
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+  justify-content: center;
+  /* align-items: center; */
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 100;
+  padding: 24px
+}
+
+
+.image {
+  position: fixed;
+  transform: translate(44%, 12%);
+  width: 33px;
+  height: 48px;
+  
+
+}
+
+
+.container {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  justify-content: center;
+  align-items: center;
+  background-color: #FFFFFF;
+  border: 1px solid #C6C6C6;
+  padding: 12px 24px;
+  border-radius: 12px;
+
+}
+
+.message {
+  text-align: center;
+  font-family: "Poppins", sans;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  color: #2F3567;
+
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  color: #FFFFFF;
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: 500;
+  font-family: "Poppins", sans;
+  background-color: #FF6F3F;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+
+}

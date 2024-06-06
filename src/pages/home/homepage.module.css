@@ -1,0 +1,30 @@
+.box {
+  
+  
+
+}
+.container {
+  width:100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 40px;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.title {
+  font-family: "Poppins", sans;
+  color: #4A4C5F;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+.subTitle {
+  font-family: "Poppins", sans;
+  font-size: 32px;
+  line-height: 32px;
+  color: #FF6F3F;
+  font-weight: 600;
+}

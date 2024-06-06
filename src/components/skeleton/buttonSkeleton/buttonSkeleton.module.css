@@ -1,0 +1,22 @@
+.box {
+  border: 1px solid #E5E4E2;
+  border-radius: 4px;
+  padding: 4px;
+  width: 32%;
+  height: 34px;
+  background: linear-gradient(to right, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite linear;
+
+}
+
+
+@keyframes loading {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
+}

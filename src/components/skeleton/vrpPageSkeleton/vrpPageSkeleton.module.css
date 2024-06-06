@@ -1,0 +1,15 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: 20px;
+
+}
+
+
+.select {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}

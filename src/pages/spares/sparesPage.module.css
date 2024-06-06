@@ -1,0 +1,28 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  row-gap: 20px;
+}
+
+
+.status {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status__apply {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #FFFFFF;
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: 500;
+  font-family: "Poppins", sans;
+  background-color: #46CD80;
+  padding: 12px;
+  border-radius: 4px;
+
+}

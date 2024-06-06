@@ -1,0 +1,39 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  row-gap: 40px;
+  justify-content: center;
+  align-items: center;
+}
+
+.msgBox {
+  display: flex;
+  flex-direction: column;
+  row-gap: 40px;
+  justify-content: center;
+  align-items: center;
+}
+
+.msgBox__msg {
+  font-family: "Poppins", sans;
+  font-size: 16px;
+  line-height: 16px;
+  color: #FF6F3F;
+  font-weight: 600;
+  
+}
+
+.btn {
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  color: #FFFFFF;
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: 500;
+  font-family: "Poppins", sans;
+  background-color: #FF6F3F;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 12px 28px;
+}
