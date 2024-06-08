@@ -16,23 +16,19 @@ import toasterReducer from "./toaster/toasterSlice";
 //   },
 // });
 
-
-
-import { configureStore } from '@reduxjs/toolkit';
-import { setupListeners } from '@reduxjs/toolkit/query';
-import { apiSlice } from '../services/api/apiSlice';
-import authReducer from './slices/auth/authSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import { setupListeners } from "@reduxjs/toolkit/query";
+import { apiSlice } from "../services/apiSlice";
+import authReducer from "./slices/auth/authSlice";
 
 export const store = configureStore({
   reducer: {
     toaster: toasterReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
     auth: authReducer,
-    
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),
 });
 
 setupListeners(store.dispatch);
-

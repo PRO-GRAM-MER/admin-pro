@@ -1,11 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { baseUrl, version,mode,role } from '../../config';
 import Cookies from 'js-cookie';
+import { baseUrl } from '../urls/baseUrl';
 
-const URL = `${baseUrl}${version}${mode}${role}`
+
+
+
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: URL,
+  baseUrl: baseUrl,
   prepareHeaders: (headers) => {
     const token = Cookies.get('token');
     if (token) {
@@ -18,6 +20,6 @@ const baseQuery = fetchBaseQuery({
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery,
-  tagTypes: ['User'],
+  tagTypes: ['Auth','Vrp','Spares'],
   endpoints: (builder) => ({}),
 });

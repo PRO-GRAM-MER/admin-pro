@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import classes from "./vrpPage.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { showToastWithTimeout } from "../../store/toaster/toasterActions";
 import { Modal } from "../../components/ui/modal/Modal";
 import { vrpRejectRequest } from "../../utils/https-request/vrp/vrpRejectRequest";
@@ -16,7 +16,7 @@ import { vrpDownloadRequest } from "../../utils/https-request/vrp/vrpDownloadReq
 import { SellerListPage } from "./SellerListPage";
 import { SellerStatusPage } from "./SellerStatusPage";
 import { useSearchParams } from "react-router-dom";
-
+import { selectVrpList, useGetVrpListQuery } from "../../services/vrpListSlice";
 
 export const VrpPage = () => {
   const [showConfirmation, setShowConfirmation] = useState(null);
@@ -35,8 +35,19 @@ export const VrpPage = () => {
 
   const [filters, setFilters] = useState(initialFilters);
 
-  const { data, isError, isLoading, isSuccess, error, refetch } =
-    useGetVrp(filters);
+  // const { data, isError, isLoading, isSuccess, error, refetch } =
+  //   useGetVrp(filters);
+
+  const { data, isSuccess } = useGetVrpListQuery();
+
+
+
+  // console.log(isSuccess ? data : null);
+
+
+  const tableData = useSelector(selectVrpList);
+
+  console.log(tableData)
 
   const rejectMutation = useMutation({
     mutationFn: vrpRejectRequest,
@@ -73,18 +84,18 @@ export const VrpPage = () => {
     },
   });
 
-  useEffect(() => {
-    if (isLoading) {
-      setVrpData([]);
-      dispatch(showToastWithTimeout("Loading...", "#FF6F3F"));
-    } else if (isSuccess) {
-      setVrpData(data.data.data);
-      dispatch(showToastWithTimeout("Vrp Details Found", "#00A167"));
-    } else if (isError) {
-      setVrpData([]);
-      dispatch(showToastWithTimeout("Error: Vrp Details Not Found", "#D32F2F"));
-    }
-  }, [isLoading, isSuccess, isError, data, dispatch]);
+  // useEffect(() => {
+  //   if (isLoading) {
+  //     setVrpData([]);
+  //     dispatch(showToastWithTimeout("Loading...", "#FF6F3F"));
+  //   } else if (isSuccess) {
+  //     setVrpData(data.data.data);
+  //     dispatch(showToastWithTimeout("Vrp Details Found", "#00A167"));
+  //   } else if (isError) {
+  //     setVrpData([]);
+  //     dispatch(showToastWithTimeout("Error: Vrp Details Not Found", "#D32F2F"));
+  //   }
+  // }, [isLoading, isSuccess, isError, data, dispatch]);
 
   const onDownload = async (rowData) => {
     dispatch(showToastWithTimeout("Downloading...", "#00A167"));
@@ -173,6 +184,11 @@ export const VrpPage = () => {
     }),
     columnHelper.accessor("request_id", {
       header: "Request Id",
+      cell: (info) => info.getValue(),
+      footer: (props) => props.column.id,
+    }),
+    columnHelper.accessor("seller_name", {
+      header: "Seller",
       cell: (info) => info.getValue(),
       footer: (props) => props.column.id,
     }),
@@ -337,7 +353,7 @@ export const VrpPage = () => {
         </button>
       </div>
 
-      <BasicTable data={vrpData} columns={columns} />
+      <BasicTable data={tableData} columns={columns} />
     </div>
   );
 };

@@ -7,7 +7,7 @@ import { LoginPage } from "./pages/authentication/login/LoginPage";
 import { Authentication } from "./pages/authentication/Authentication";
 
 import { checkAuthLoader } from "./utils/loaders/checkAuthLoader";
-import { action as logOutAction } from "./pages/home/homePage/logOut/LogOut";
+import { action as logOutAction } from "./pages/home/logOut/LogOut";
 
 import "./App.css";
 import { VrpPage } from "./pages/vrp/VrpPage";
@@ -18,27 +18,24 @@ import { HomePage } from "./pages/home/HomePage";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootLayout />,
+    element: <LoginPage />,
     errorElement: <ErrorPage />,
+  },
+  {
+    path: "dashboard",
+    element: <RootLayout />,
+    // errorElement: <ErrorPage />,
+    loader: checkAuthLoader,
     children: [
       {
-        path: "/",
-        element: <Authentication />,
-        children: [{ index: true, element: <LoginPage /> }],
+        index: true,
+        element: <HomePage />,
       },
-      {
-        path: "/home",
-        element: <Home />,
-        loader: checkAuthLoader,
-        children: [
-          { index: true, element: <HomePage /> },
-          { path: "vrp", element: <VrpPage /> },
-          { path: "spares", element: <SparesPage /> },
-        ],
-      },
-      { path: "logout", action: logOutAction },
+      { path: "vrp", element: <VrpPage /> },
+      { path: "spares", element: <SparesPage /> },
     ],
   },
+  // { path: "logout", action: logOutAction },
 ]);
 
 function App() {

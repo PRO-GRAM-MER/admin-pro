@@ -1,15 +1,11 @@
-.box {
-  
-  
 
-}
 .container {
-  width:100%;
   display: flex;
   flex-direction: column;
   row-gap: 40px;
   justify-content: center;
   align-items: center;
+  
 
 }
 
@@ -19,6 +15,7 @@
   font-size: 28px;
   font-weight: 400;
   line-height: 28px;
+  text-align: center;
 }
 
 .subTitle {
@@ -27,4 +24,5 @@
   line-height: 32px;
   color: #FF6F3F;
   font-weight: 600;
+  
 }

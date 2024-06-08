@@ -7,7 +7,6 @@ export const Authentication = () => {
   return (
     <div className={classes.auth}>
       <BrandIdentity />
-
       <div className={classes.auth__outlet}>
         <Outlet />
       </div>

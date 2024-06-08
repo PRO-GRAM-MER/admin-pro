@@ -1,26 +1,29 @@
 import React from "react";
 import profile from "../../assets/profile_pic.png";
+import dashboard from "../../assets/home.svg";
 import prexo from "../../assets/prexo.svg";
 import vrp from "../../assets/vrp.svg";
 import openBox from "../../assets/openBox.svg";
-import spare from "../../assets/spare.svg"
+import spare from "../../assets/spare.svg";
 
-import { Form, Link, NavLink, useNavigate } from "react-router-dom";
+import { Form, NavLink, useNavigate } from "react-router-dom";
 import { Button } from "../ui/button/Button";
 import classes from "./sidebar.module.css";
 import { logOut } from "../../utils/https-request/auth/logInRequest";
 import { useDispatch } from "react-redux";
 import { showToastWithTimeout } from "../../store/toaster/toasterActions";
+import { clearCredentials } from "../../store/slices/auth/authSlice";
 
 export const SideBar = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const categories = [
-    { id: "prexo", image: prexo, name: "PREXO" },
-    { id: "vrp", image: vrp, name: "VRP" },
-    { id: "spares", image: spare, name: "SPARES" },
-    { id: "openBox", image: openBox, name: "OPEN-BOX" },
+    { id: "home", image: dashboard, name: "HOME", path: "/dashboard" },
+    { id: "vrp", image: vrp, name: "VRP", path: "vrp" },
+    { id: "spares", image: spare, name: "SPARES", path: "spares" },
+    { id: "prexo", image: prexo, name: "PREXO", path: "prexo" },
+    { id: "openBox", image: openBox, name: "OPEN-BOX", path: "openBox" },
   ];
 
   const contacts = [
@@ -28,13 +31,12 @@ export const SideBar = () => {
     { id: "email", link: "contact@mobigarage.com" },
   ];
 
-
-  const handleLogOut = ()=>{
+  const handleLogOut = () => {
+    dispatch(clearCredentials())
     dispatch(showToastWithTimeout("Logging Out..."));
-    navigate("/")
-    logOut();
-  
-  }
+    navigate("/");
+    // logOut();
+  };
   return (
     <div className={classes.stack}>
       <div className={classes.container}>
@@ -65,14 +67,15 @@ export const SideBar = () => {
           <div className={classes.container__box__categories__box}>
             {categories.map((category) => (
               <NavLink
-              key={category.id}
-              to={category.id}
-              className={({ isActive }) =>
-                isActive
-                  ? `${classes.container__box__categories__box__category} ${classes.isActive}`
-                  : classes.container__box__categories__box__category
-              }
-            >
+                to={category.path}
+                key={category.id}
+                className={({ isActive }) =>
+                  isActive
+                    ? `${classes.container__box__categories__box__category} ${classes.isActive}`
+                    : classes.container__box__categories__box__category
+                }
+                end
+              >
                 <img
                   src={category.image}
                   alt={category.name}
@@ -116,10 +119,10 @@ export const SideBar = () => {
           <hr className={classes.box__item__divider} />
         </div>
         <div className={classes.container__box__categories}>
-          {/* <Button text="Log Out" type="button" onClick={handleLogOut}/> */}
-          <Form action="/logout" method="post">
+          <Button text="Log Out" type="button" onClick={handleLogOut}/>
+          {/* <Form action="/logout" method="post">
             <Button text="Log Out" />
-          </Form>
+          </Form> */}
         </div>
       </div>
     </div>
