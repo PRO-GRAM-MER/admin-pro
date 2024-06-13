@@ -5,13 +5,12 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { motion, AnimatePresence } from "framer-motion";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { showToastWithTimeout } from "../../store/toaster/toasterActions";
 import { Modal } from "../../components/ui/modal/Modal";
 import { vrpRejectRequest } from "../../utils/https-request/vrp/vrpRejectRequest";
 
 import { vrpApprovalRequest } from "../../utils/https-request/vrp/vrpApprovalRequest";
-
 
 import { useSearchParams } from "react-router-dom";
 
@@ -20,6 +19,10 @@ import { SellerStatusPage } from "../vrp/SellerStatusPage";
 import classes from "./sparesPage.module.css";
 import useGetSpares from "../../tanstack-query/spares/useGetSpares";
 import { sparesDownloadRequest } from "../../utils/https-request/spares/sparesDownloadRequest";
+import {
+  selectSpareList,
+  useGetSpareListQuery,
+} from "../../services/spareListSlice";
 
 export const SparesPage = () => {
   const [showConfirmation, setShowConfirmation] = useState(null);
@@ -38,8 +41,19 @@ export const SparesPage = () => {
 
   const [filters, setFilters] = useState(initialFilters);
 
-  const { data, isError, isLoading, isSuccess, error, refetch } =
-    useGetSpares(filters);
+
+
+ 
+
+
+  // const { data, isError, isLoading, isSuccess, error, refetch } =
+  //   useGetSpares(filters);
+
+  // const { data, isLoading, isSuccess, isError } = useGetSpareListQuery();
+
+  const tableData = useSelector(selectSpareList);
+
+  console.log(tableData);
 
   const rejectMutation = useMutation({
     mutationFn: vrpRejectRequest,
@@ -76,18 +90,18 @@ export const SparesPage = () => {
     },
   });
 
-  useEffect(() => {
-    if (isLoading) {
-      setVrpData([]);
-      dispatch(showToastWithTimeout("Loading...", "#FF6F3F"));
-    } else if (isSuccess) {
-      setVrpData(data.data.data);
-      dispatch(showToastWithTimeout("Vrp Details Found", "#00A167"));
-    } else if (isError) {
-      setVrpData([]);
-      dispatch(showToastWithTimeout("Error: Vrp Details Not Found", "#D32F2F"));
-    }
-  }, [isLoading, isSuccess, isError, data, dispatch]);
+  // useEffect(() => {
+  //   if (isLoading) {
+  //     setVrpData([]);
+  //     dispatch(showToastWithTimeout("Loading...", "#FF6F3F"));
+  //   } else if (isSuccess) {
+  //     setVrpData(data.data.data);
+  //     dispatch(showToastWithTimeout("Vrp Details Found", "#00A167"));
+  //   } else if (isError) {
+  //     setVrpData([]);
+  //     dispatch(showToastWithTimeout("Error: Vrp Details Not Found", "#D32F2F"));
+  //   }
+  // }, [isLoading, isSuccess, isError, data, dispatch]);
 
   const onDownload = async (rowData) => {
     dispatch(showToastWithTimeout("Downloading...", "#00A167"));
@@ -334,7 +348,7 @@ export const SparesPage = () => {
         </button>
       </div>
 
-      <BasicTable data={vrpData} columns={columns} />
+      <BasicTable data={tableData} columns={columns} />
     </div>
   );
 };

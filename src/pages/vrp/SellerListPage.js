@@ -5,26 +5,25 @@ import {
   selectSellerList,
   useGetSellerListQuery,
 } from "../../services/sellerListSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setFilters } from "../../store/slices/vrp/vrpFilterSlice";
 
 export const SellerListPage = ({ sellerId, onFilter }) => {
-  const [selectedSellerId, setSelectedSellerId] = useState(sellerId);
-
-  // const { data, isSuccess } = useGetSellerList();
-  const { data, isSuccess } = useGetSellerListQuery();
-  console.log(isSuccess ? data : null);
-
+  const currentSeller = useSelector((state) => state.vrpFilter.seller_id);
+  
+ 
+  const {  isSuccess } = useGetSellerListQuery();
   const sellerList = useSelector(selectSellerList);
   const handleItemSelected = (itemId) => {
-    setSelectedSellerId(itemId);
     onFilter(itemId);
   };
+  
 
-  return isSuccess ? (
+  return (
     <SellerList
       sellers={sellerList}
       onItemSelected={(itemId) => handleItemSelected(itemId)}
-      sellerId={selectedSellerId}
+      sellerId={currentSeller}
     />
-  ) : null;
+  ) ;
 };

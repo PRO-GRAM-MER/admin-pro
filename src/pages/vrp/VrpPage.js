@@ -3,7 +3,7 @@ import useGetVrp from "../../tanstack-query/vrp/useGetVrp";
 import { BasicTable } from "../../components/table/BasicTable";
 import { createColumnHelper } from "@tanstack/react-table";
 import { motion, AnimatePresence } from "framer-motion";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 
 import classes from "./vrpPage.module.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,87 +15,55 @@ import { vrpApprovalRequest } from "../../utils/https-request/vrp/vrpApprovalReq
 import { vrpDownloadRequest } from "../../utils/https-request/vrp/vrpDownloadRequest";
 import { SellerListPage } from "./SellerListPage";
 import { SellerStatusPage } from "./SellerStatusPage";
-import { useSearchParams } from "react-router-dom";
+import {  useSearchParams } from "react-router-dom";
 import { selectVrpList, useGetVrpListQuery } from "../../services/vrpListSlice";
+import { setFilters } from "../../store/slices/vrp/vrpFilterSlice";
 
 export const VrpPage = () => {
   const [showConfirmation, setShowConfirmation] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
-  const [vrpData, setVrpData] = useState([]);
-
+ 
   const [searchParams, setSearchParams] = useSearchParams();
-  const sellerId = searchParams.get("seller_id");
-  const status = searchParams.get("status");
-  const initialFilters = {
-    seller_id: sellerId || "0",
-    status: status || "0",
-  };
-  const queryClient = useQueryClient();
+
+  const [sellerId, setSellerId] = useState("0");
+  const [sellerStatus, setSellerStatus] = useState("0");
+  const { seller_id, status } = useSelector((state) => state.vrpFilter);
+
   const dispatch = useDispatch();
 
-  const [filters, setFilters] = useState(initialFilters);
-
-  // const { data, isError, isLoading, isSuccess, error, refetch } =
-  //   useGetVrp(filters);
-
-  const { data, isSuccess } = useGetVrpListQuery();
-
-
-
-  // console.log(isSuccess ? data : null);
-
+  const { data, isSuccess } = useGetVrpListQuery({
+    seller_id,
+    status,
+  });
 
   const tableData = useSelector(selectVrpList);
 
-  console.log(tableData)
+  const onSellerFilter =  (sellerId) => {
+    setSellerId(sellerId);
+    console.log(sellerId)
+  };
+  const onStatusFilter = (status) => {
+    setSellerStatus(status);
+    console.log(status)
+  };
 
-  const rejectMutation = useMutation({
-    mutationFn: vrpRejectRequest,
-    onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ["vrp"] });
-      dispatch(
-        showToastWithTimeout(response.message.displayMessage, "#00A167")
-      );
-    },
-    onError: (error) => {
-      dispatch(
-        showToastWithTimeout(
-          error.response.data.message.displayMessage,
-          "#D32F2F"
-        )
-      );
-    },
-  });
-  const approvalMutation = useMutation({
-    mutationFn: vrpApprovalRequest,
-    onSuccess: (response) => {
-      queryClient.invalidateQueries({ queryKey: ["vrp"] });
-      dispatch(
-        showToastWithTimeout(response.message.displayMessage, "#00A167")
-      );
-    },
-    onError: (error) => {
-      dispatch(
-        showToastWithTimeout(
-          error.response.data.message.displayMessage,
-          "#D32F2F"
-        )
-      );
-    },
-  });
+  const sellerIdFromUrl = searchParams.get("seller_id");
+  const statusFromUrl = searchParams.get("status");
 
-  // useEffect(() => {
-  //   if (isLoading) {
-  //     setVrpData([]);
-  //     dispatch(showToastWithTimeout("Loading...", "#FF6F3F"));
-  //   } else if (isSuccess) {
-  //     setVrpData(data.data.data);
-  //     dispatch(showToastWithTimeout("Vrp Details Found", "#00A167"));
-  //   } else if (isError) {
-  //     setVrpData([]);
-  //     dispatch(showToastWithTimeout("Error: Vrp Details Not Found", "#D32F2F"));
-  //   }
-  // }, [isLoading, isSuccess, isError, data, dispatch]);
+  useEffect(() => {
+    if (sellerIdFromUrl !== "0" || statusFromUrl !== "0") {
+      dispatch(
+        setFilters({ seller_id: sellerIdFromUrl, status: statusFromUrl })
+      );
+    }
+  }, [dispatch, sellerIdFromUrl, seller_id, status, statusFromUrl]);
+
+  const handleApplied = () => {
+    dispatch(setFilters({ seller_id: sellerId, status: sellerStatus }));
+    setSearchParams({ seller_id: sellerId, status: sellerStatus });
+  };
+
+  
 
   const onDownload = async (rowData) => {
     dispatch(showToastWithTimeout("Downloading...", "#00A167"));
@@ -126,30 +94,6 @@ export const VrpPage = () => {
     }
   };
 
-  const onSellerFilter = (sellerId) => {
-    setSearchParams((params) => {
-      params.set("seller_id", sellerId);
-      return params.toString();
-    });
-  };
-
-  const onStatusFilter = (status) => {
-    setSearchParams((params) => {
-      params.set("status", status);
-      return params.toString();
-    });
-  };
-
-  const handleApplied = () => {
-    const sellerParams = searchParams.get("seller_id");
-    const statusParams = searchParams.get("status");
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      seller_id: sellerParams,
-      status: statusParams,
-    }));
-  };
-
   const openModal = (rowData) => {
     setSelectedRow(rowData);
     setShowConfirmation(rowData.request_id);
@@ -162,15 +106,15 @@ export const VrpPage = () => {
   };
 
   const onReject = async (requestId, remarks) => {
-    await rejectMutation.mutate({ requestId: requestId, remarks: remarks });
-    closeModal();
-    dispatch(showToastWithTimeout("Request Rejected"));
+    // await rejectMutation.mutate({ requestId: requestId, remarks: remarks });
+    // closeModal();
+    // dispatch(showToastWithTimeout("Request Rejected"));
   };
 
   const onApproval = async () => {
-    await approvalMutation.mutate({ requestId: showConfirmation });
-    closeModal();
-    dispatch(showToastWithTimeout("Request Approved"));
+    // await approvalMutation.mutate({ requestId: showConfirmation });
+    // closeModal();
+    // dispatch(showToastWithTimeout("Request Approved"));
   };
 
   const columnHelper = createColumnHelper();
@@ -341,11 +285,11 @@ export const VrpPage = () => {
     <div className={classes.box}>
       <div className={classes.status}>
         <SellerListPage
-          sellerId={filters.seller_id}
+          // sellerId={filters.seller_id}
           onFilter={(sellerId) => onSellerFilter(sellerId)}
         />
         <SellerStatusPage
-          status={filters.status}
+          // status={filters.status}
           onFilter={(status) => onStatusFilter(status)}
         />
         <button className={classes.status__apply} onClick={handleApplied}>

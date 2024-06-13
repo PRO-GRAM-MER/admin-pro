@@ -1,24 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./sellerList.module.css";
 
-export const SellerList = ({
-  sellers,
-  onItemSelected,
-  sellerId,
-}) => {
-  const handleChange = (sellerId) => {
-
-    onItemSelected(sellerId);
-    console.log(sellerId)
+export const SellerList = ({ sellers, onItemSelected, sellerId }) => {
+  const [currentSeller, setCurrentSeller] = useState(sellerId);
+  const handleChange = (event) => {
+    const newSeller = event.target.value;
+    setCurrentSeller(newSeller);
+    onItemSelected(newSeller);
   };
 
   return (
     <select
       className={classes.box}
-      onChange={(event) => handleChange(event.target.value)}
-      value={sellerId}
+      onChange={handleChange}
+      value={currentSeller}
     >
-      <option value="" className={classes.box__option}>
+      <option value="0" className={classes.box__option}>
         Select all sellers
       </option>
       {sellers.map((seller) => (
@@ -33,4 +30,3 @@ export const SellerList = ({
     </select>
   );
 };
-

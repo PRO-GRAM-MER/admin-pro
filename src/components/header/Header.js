@@ -2,10 +2,10 @@ import React from "react";
 import logo from "../../assets/logoWithName.svg";
 import notification from "../../assets/notification.svg";
 import classes from "./header.module.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { SearchInput } from "../ui/searchInput/SearchInput";
 
-export const Header = ({ isPending }) => {
+export const Header = () => {
   const status = true;
   const navigate = useNavigate();
 
@@ -15,10 +15,12 @@ export const Header = ({ isPending }) => {
   return (
     <div className={classes.container}>
       <div className={classes.container__box}>
-        <div className={classes.container__box__logo}>
-          <img src={logo} alt="Logo" className={classes.container__box__img} />
-        </div>
+        <Link className={classes.container__box__logo} to={"/dashboard"}></Link>
         <SearchInput placeholder="Search..." />
+        <Link
+          className={classes.container__box__notification}
+          to="/dashboard"
+        ></Link>
       </div>
     </div>
   );

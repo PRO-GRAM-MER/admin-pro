@@ -1,18 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./sellerStatus.module.css";
 
 export const SellerStatus = ({ statuses, onItemSelected, status }) => {
-  const handleChange = (status) => {
-    onItemSelected(status.toString());
+  const [currentStatus, setCurrentStatus] = useState(status);
+  const handleChange = (event) => {
+    const newStatus = event.target.value;
+    setCurrentStatus(newStatus);
+    onItemSelected(newStatus);
   };
 
   return (
     <select
       className={classes.box}
-      onChange={(event) => handleChange(event.target.value)}
-      value={status}
+      onChange={handleChange}
+      value={currentStatus}
     >
-      <option value="" className={classes.box__option}>
+      <option value="0" className={classes.box__option}>
         Select all statuses
       </option>
       {statuses.map((status) => (
