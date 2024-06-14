@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./sellerList.module.css";
 
-export const SellerList = ({ sellers, onItemSelected, sellerId }) => {
-  const [currentSeller, setCurrentSeller] = useState(sellerId);
+export const SellerList = ({ sellers, onItemSelected, selectedSellerId }) => {
+  const [currentSeller, setCurrentSeller] = useState(selectedSellerId);
+
+  useEffect(() => {
+    setCurrentSeller(selectedSellerId);
+  }, [selectedSellerId]);
+
   const handleChange = (event) => {
-    const newSeller = event.target.value;
-    setCurrentSeller(newSeller);
-    onItemSelected(newSeller);
+    const newSellerId = event.target.value;
+    setCurrentSeller(newSellerId);
+    onItemSelected(newSellerId);
   };
 
   return (

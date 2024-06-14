@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./sellerStatus.module.css";
 
 export const SellerStatus = ({ statuses, onItemSelected, status }) => {
   const [currentStatus, setCurrentStatus] = useState(status);
+  useEffect(() => {
+    setCurrentStatus(status);
+  }, [status]);
+
   const handleChange = (event) => {
     const newStatus = event.target.value;
     setCurrentStatus(newStatus);
     onItemSelected(newStatus);
   };
+ 
 
   return (
     <select

@@ -1,29 +1,23 @@
-import React, { useState } from "react";
-import useGetSellerList from "../../tanstack-query/vrp/useGetSellerList";
+import React from "react";
+import { useSelector } from "react-redux";
+import { useGetSellerListQuery, selectSellerList } from "../../services/sellerListSlice";
 import { SellerList } from "../../components/sellerList/SellerList";
-import {
-  selectSellerList,
-  useGetSellerListQuery,
-} from "../../services/sellerListSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { setFilters } from "../../store/slices/vrp/vrpFilterSlice";
 
-export const SellerListPage = ({ sellerId, onFilter }) => {
-  const currentSeller = useSelector((state) => state.vrpFilter.seller_id);
-  
- 
-  const {  isSuccess } = useGetSellerListQuery();
+export const SellerListPage = ({ onFilter }) => {
+  const { isSuccess } = useGetSellerListQuery();
+  const seller = useSelector(state => state.vrpFilter.seller_id);
+  console.log(seller)
   const sellerList = useSelector(selectSellerList);
+
   const handleItemSelected = (itemId) => {
     onFilter(itemId);
   };
-  
 
   return (
     <SellerList
       sellers={sellerList}
-      onItemSelected={(itemId) => handleItemSelected(itemId)}
-      sellerId={currentSeller}
+      onItemSelected={handleItemSelected}
+      selectedSellerId={seller}  // Pass the selected seller ID
     />
-  ) ;
+  );
 };

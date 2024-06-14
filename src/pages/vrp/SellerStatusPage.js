@@ -7,11 +7,12 @@ import {
 } from "../../services/statusSlice";
 import { useSelector } from "react-redux";
 
-export const SellerStatusPage = ({ onFilter }) => {
-  const currentStatus = useSelector((state) => state.vrpFilter.status);
 
+export const SellerStatusPage = ({ onFilter }) => {
   const { isSuccess } = useGetStatusListQuery();
 
+  const currentStatus = useSelector((state) => state.vrpFilter.status);
+  console.log(currentStatus)
   const statusData = useSelector(selectStatusList);
 
   const handleItemSelected = (itemId) => {
@@ -20,7 +21,7 @@ export const SellerStatusPage = ({ onFilter }) => {
   return isSuccess ? (
     <SellerStatus
       statuses={statusData}
-      onItemSelected={(itemId) => handleItemSelected(itemId)}
+      onItemSelected={handleItemSelected}
       status={currentStatus}
     />
   ) : null;

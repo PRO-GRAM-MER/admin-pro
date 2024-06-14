@@ -4,7 +4,6 @@ import { BasicTable } from "../../components/table/BasicTable";
 import { createColumnHelper } from "@tanstack/react-table";
 import { motion, AnimatePresence } from "framer-motion";
 
-
 import classes from "./vrpPage.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { showToastWithTimeout } from "../../store/toaster/toasterActions";
@@ -15,14 +14,15 @@ import { vrpApprovalRequest } from "../../utils/https-request/vrp/vrpApprovalReq
 import { vrpDownloadRequest } from "../../utils/https-request/vrp/vrpDownloadRequest";
 import { SellerListPage } from "./SellerListPage";
 import { SellerStatusPage } from "./SellerStatusPage";
-import {  useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { selectVrpList, useGetVrpListQuery } from "../../services/vrpListSlice";
 import { setFilters } from "../../store/slices/vrp/vrpFilterSlice";
+import { VrpPageSkeleton } from "../../components/skeleton/vrpPageSkeleton/VrpPageSkeleton";
 
 export const VrpPage = () => {
   const [showConfirmation, setShowConfirmation] = useState(null);
   const [selectedRow, setSelectedRow] = useState(null);
- 
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [sellerId, setSellerId] = useState("0");
@@ -38,32 +38,34 @@ export const VrpPage = () => {
 
   const tableData = useSelector(selectVrpList);
 
-  const onSellerFilter =  (sellerId) => {
+  const onSellerFilter = (sellerId) => {
     setSellerId(sellerId);
-    console.log(sellerId)
+    console.log(sellerId);
   };
   const onStatusFilter = (status) => {
     setSellerStatus(status);
-    console.log(status)
+    console.log(status);
   };
-
-  const sellerIdFromUrl = searchParams.get("seller_id");
-  const statusFromUrl = searchParams.get("status");
 
   useEffect(() => {
-    if (sellerIdFromUrl !== "0" || statusFromUrl !== "0") {
-      dispatch(
-        setFilters({ seller_id: sellerIdFromUrl, status: statusFromUrl })
-      );
-    }
-  }, [dispatch, sellerIdFromUrl, seller_id, status, statusFromUrl]);
+    const sellerIdFromUrl = searchParams.get("seller_id");
+    const statusFromUrl = searchParams.get("status");
+    setSellerId(sellerIdFromUrl);
+    setSellerStatus(statusFromUrl);
+
+    dispatch(
+      setFilters({
+        seller_id: sellerIdFromUrl || "0",
+        status: statusFromUrl || "0",
+      })
+    );
+  }, [dispatch, searchParams]);
 
   const handleApplied = () => {
-    dispatch(setFilters({ seller_id: sellerId, status: sellerStatus }));
     setSearchParams({ seller_id: sellerId, status: sellerStatus });
+    dispatch(setFilters({ seller_id: sellerId, status: sellerStatus }));
+    console.log(searchParams.get("seller_id"));
   };
-
-  
 
   const onDownload = async (rowData) => {
     dispatch(showToastWithTimeout("Downloading...", "#00A167"));
@@ -281,17 +283,11 @@ export const VrpPage = () => {
     }),
   ];
 
-  return (
+  return isSuccess ? (
     <div className={classes.box}>
       <div className={classes.status}>
-        <SellerListPage
-          // sellerId={filters.seller_id}
-          onFilter={(sellerId) => onSellerFilter(sellerId)}
-        />
-        <SellerStatusPage
-          // status={filters.status}
-          onFilter={(status) => onStatusFilter(status)}
-        />
+        <SellerListPage onFilter={(sellerId) => onSellerFilter(sellerId)} />
+        <SellerStatusPage onFilter={(status) => onStatusFilter(status)} />
         <button className={classes.status__apply} onClick={handleApplied}>
           Apply
         </button>
@@ -299,5 +295,7 @@ export const VrpPage = () => {
 
       <BasicTable data={tableData} columns={columns} />
     </div>
+  ) : (
+    <VrpPageSkeleton />
   );
 };
