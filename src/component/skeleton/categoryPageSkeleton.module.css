@@ -1,0 +1,84 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  justify-content: center;
+}
+
+.box__filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.box__select {
+  font-family: "Poppins", sans;
+  color: #2f3567;
+  font-size: 16px;
+  line-height: 1.5;
+  border: 1px solid #E5E4E2;
+  border-radius: 4px;
+  padding: 4px;
+  width: 20%;
+  background: linear-gradient(to right, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite linear;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+
+.box__btn {
+  border: 1px solid #E5E4E2;
+  border-radius: 4px;
+  padding: 4px;
+  width: 12%;
+  height: 34px;
+  background: linear-gradient(to right, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite linear;
+
+}
+.box__table {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  border: 1px solid #E5E4E2;
+  border-radius: 4px;
+  padding: 4px;
+
+}
+
+.box__table__title {
+  border: 1px solid #E5E4E2;
+  border-radius: 4px;
+  width: 100%;
+  height: 40px;
+  background: linear-gradient(to right, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite linear;
+
+}
+
+.box__table__content {
+  border: 1px solid #E5E4E2;
+  border-radius: 4px;
+  width: 100%;
+  height: 400px;
+  background: linear-gradient(to right, #f0f0f0 0%, #e0e0e0 50%, #f0f0f0 100%);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite linear;
+
+}
+
+
+@keyframes loading {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
+}

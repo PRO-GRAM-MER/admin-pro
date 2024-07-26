@@ -1,41 +1,35 @@
-import React from "react";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-
-import { RootLayout } from "./pages/RootLayout";
-import { Home } from "./pages/home/Home";
-import { LoginPage } from "./pages/authentication/login/LoginPage";
-import { Authentication } from "./pages/authentication/Authentication";
-
-import { checkAuthLoader } from "./utils/loaders/checkAuthLoader";
-import { action as logOutAction } from "./pages/home/logOut/LogOut";
-
 import "./App.css";
-import { VrpPage } from "./pages/vrp/VrpPage";
+import { LoginPage } from "./pages/auth/LogInPage";
+import { HomePage } from "./pages/homePage/HomePage";
+import {
+  checkAuthLoader,
+  DashBoardPage,
+} from "./pages/dashboard/DashBoardPage";
+import { CategoryPage } from "./pages/category/CategoryPage";
 import { ErrorPage } from "./pages/error/ErrorPage";
-import { SparesPage } from "./pages/spares/SparesPage";
-import { HomePage } from "./pages/home/HomePage";
+import { RootLayout } from "./pages/RootLayout";
+import { ToastContainer } from "react-toastify";
 
 const router = createBrowserRouter([
+  // { path: "/", element: <LoginPage /> },
   {
     path: "/",
-    element: <LoginPage />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "dashboard",
     element: <RootLayout />,
-    // errorElement: <ErrorPage />,
-    loader: checkAuthLoader,
+    errorElement: <ErrorPage />,
     children: [
+      { index: true, element: <LoginPage /> },
       {
-        index: true,
-        element: <HomePage />,
+        path: "dashboard",
+        element: <DashBoardPage />,
+        loader: checkAuthLoader,
+        children: [
+          { index: true, element: <HomePage /> },
+          { path: ":category", element: <CategoryPage /> },
+        ],
       },
-      { path: "vrp", element: <VrpPage /> },
-      { path: "spares", element: <SparesPage /> },
     ],
   },
-  // { path: "logout", action: logOutAction },
 ]);
 
 function App() {

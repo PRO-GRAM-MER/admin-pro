@@ -1,7 +1,5 @@
-import { setCredentials } from "../store/slices/auth/authSlice";
-import { showToastWithTimeout } from "../store/toaster/toasterActions";
-import {apiSlice} from "./apiSlice"
-
+import { apiSlice } from "./apiSlice";
+import Cookies from "js-cookie";
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -11,50 +9,27 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: credentials,
       }),
-      invalidatesTags: ["Auth"],
-      onQueryStarted: async (arg, { queryFulfilled, dispatch, getState }) => {
+      invalidatesTags: ["login"],
+      onQueryStarted: async (arg, { queryFulfilled }) => {
         try {
           const { data } = await queryFulfilled;
-          const { auth_token: token, expiry_timestamp: expirationTime } =
-            data.data;
-
-          dispatch(setCredentials({ token, expirationTime }));
-          const { auth } = getState();
-          console.log(auth.expirationTime);
-
-          // Show success message
-          dispatch(
-            showToastWithTimeout(data.message.displayMessage, "#00A167")
-          );
-
-          // console.log("Login Successful! Response:", data, getState());
+          const { auth_token, expiry_timestamp } = data.data;
+          console.log(auth_token)
+          Cookies.set("token",auth_token, );
+          Cookies.set("expirationTime",expiry_timestamp, );
         } catch (err) {
-          // Handle error
-          dispatch(
-            showToastWithTimeout(
-              err.error.data.message.displayMessage,
-              "#D32F2F"
-            )
-          );
+          console.error("Login failed:", err);
         }
       },
     }),
     userProfile: builder.query({
-      query: () => "profile",
-      providesTags: ["UserProfile"],
-      onQueryStarted: async (arg, { queryFulfilled, dispatch }) => {
+      query: () => "/profile",
+      providesTags: ["user"],
+      onQueryStarted: async (arg, { queryFulfilled }) => {
         try {
           await queryFulfilled;
-          // Handle successful user profile fetch
         } catch (err) {
-          console.error("Fetching user profile failed:", err.error);
-          // Handle errors
-          dispatch(
-            showToastWithTimeout(
-              err.error.data.message.displayMessage,
-              "#D32F2F"
-            )
-          );
+          console.error("Fetching user profile failed:", err);
         }
       },
     }),

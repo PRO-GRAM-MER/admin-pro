@@ -1,0 +1,19 @@
+.container {
+  padding: 0 20px;
+}
+
+
+
+.container__outlet {
+  display: flex;
+  column-gap: 12px;
+  margin-top: 96px;
+}
+
+
+
+.container__outlet__box {
+  margin-left: 260px;
+  flex-grow: 1;
+
+}

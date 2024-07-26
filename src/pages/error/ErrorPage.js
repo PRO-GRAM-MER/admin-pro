@@ -1,29 +1,21 @@
 import React from "react";
-import { BrandIdentity } from "../../components/brandIdentity/BrandIdentity";
-import classes from "./errorPage.module.css";
-import { Button } from "../../components/ui/button/Button";
+
+import classes from "./errorPage.module.css"
+
 import { Link, useRouteError } from "react-router-dom";
-import Cookies from "js-cookie";
+import { Branding } from "../../component/branding/Branding";
 
 export const ErrorPage = () => {
-  let error = useRouteError();
-  console.log(error);
-
-  const token = Cookies.get("token");
-  const expirationTime = Cookies.get("expirationTime");
-  const navigateTo = token && expirationTime ? "dashboard" : "/";
-
+  const error = useRouteError();
+  console.error(error);
   return (
     <div className={classes.box}>
-      <BrandIdentity />
+      <Branding />
       <div className={classes.msgBox}>
         <h1 className={classes.msgBox__msg}>
-          Error {error?.status || "Unknown"}:{" "}
-          {error?.statusText || "Unknown Error"}.
+        Error 404 : Page Not Found.
         </h1>
-        <Link to={navigateTo} className={classes.btn}>
-          Back
-        </Link>
+        <Link to="/" className={classes.btn}>Back</Link>
       </div>
     </div>
   );

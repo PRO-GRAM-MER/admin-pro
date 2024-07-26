@@ -1,0 +1,116 @@
+.login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 40px;
+}
+
+.login__head {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.login__head__title {
+  font-family: "Poppins", sans;
+  font-size: 14px;
+  line-height: 21px;
+  font-weight: 500;
+  color: #9C9C9C;
+}
+
+
+.login__head__subtitle {
+  font-family: "Poppins", sans;
+  font-size: 24px;
+  line-height: 36px;
+  font-weight: 600;
+  color: #2F3567;
+
+}
+
+
+.form {
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  row-gap: 40px;
+}
+
+
+.form__controls {
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+  justify-content: center;
+}
+
+.form__group {
+  position: relative;
+  padding: 15px 0 0;
+}
+
+.form__field {
+  width: 40ch;
+  border-radius: 4px;
+  border: 1px solid #d2d2d2;
+  font-size: 16px;
+  line-height: 16px;
+  letter-spacing: 1px;
+  color: #2F3567;
+  font-family: "Poppins", sans;
+  padding: 16px 28px;
+  background: transparent;
+}
+
+.form__field::placeholder {
+  color: transparent;
+}
+
+.form__field:placeholder-shown~.form__label {
+  font-size: 16px;
+  cursor: text;
+  top: 26px;
+}
+
+.form__label {
+  font-family: "Poppins", sans;
+  left: 12px;
+  padding: 0 12px;
+}
+
+.form__label,
+.form__field:focus~.form__label {
+  position: absolute;
+  top: 2px;
+  display: block;
+  transition: 0.2s;
+  font-size: 16px;
+  color: #9b9b9b;
+  background-color: #ffff;
+}
+
+.form__field:focus~.form__label {
+  color: #2F3567;
+}
+
+.form__btn {
+  width: 100%;
+  font-size: 16px;
+  line-height: 16px;
+  font-weight: 500;
+  font-family: "Poppins", sans;
+  color: #FFFFFF;
+  background-color: #9C9C9C;
+  padding: 18px;
+  border-radius: 4px;
+  cursor: pointer;
+
+}
+
+.form__btn__enabled {
+  background-color: #FF6F3F;
+
+}

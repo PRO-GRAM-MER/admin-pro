@@ -18,8 +18,8 @@ export const vrpListSlice = apiSlice.injectEndpoints({
         return vrpListAdapter.setAll(initialState, loadedVrpList);
       },
       providesTags: (result, error, arg) => [
-        { type: "Vrp", id: "vrpList" },
-        ...result.ids.map((id) => ({ type: "Vrp", id })),
+        { type: "vrp", id: "vrpList" },
+        ...result.ids.map((id) => ({ type: "vrp", id })),
       ],
     }),
   }),
