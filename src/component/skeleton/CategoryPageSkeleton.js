@@ -9,7 +9,6 @@ export const CategoryPageSkeleton = () => {
         <select disabled className={classes.box__select}></select>
         <button className={classes.box__btn}></button>
         <button className={classes.box__btn}></button>
-        <button className={classes.box__btn}></button>
       </div>
       <div className={classes.box__table}>
         <div className={classes.box__table__title}></div>

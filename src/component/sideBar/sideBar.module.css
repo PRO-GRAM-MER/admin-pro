@@ -127,9 +127,8 @@
 .box__colors__carousel__inner {
   display: flex;
   flex-direction: column;
-  /* cursor: grab; */
   scroll-snap-align: start;
-  padding-right: 4px;
+  padding-right: 8px;
   background-color: #FFFFFF;
 }
 

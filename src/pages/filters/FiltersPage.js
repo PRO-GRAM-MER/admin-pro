@@ -4,19 +4,23 @@ import {
   selectSellerList,
   useGetSellerListQuery,
 } from "../../services/sellerApiSlice";
-import { selectCategoryState, setFilters } from "../../store/categorySlice";
+import {
+  clearFilters,
+  selectCategoryState,
+  setFilters,
+} from "../../store/categorySlice";
 import {
   selectStatusList,
   useGetStatusListQuery,
 } from "../../services/statusApiSlice";
 
-
 import classes from "./filterPage.module.css";
 import { useSearchParams } from "react-router-dom";
 import { onOpen } from "../../store/priorityModalSlice";
 import { CustomSelect } from "../../component/customSelect/CustomSelect";
+import { clear } from "@testing-library/user-event/dist/clear";
 
-export const FiltersPage = ({ onApply }) => {
+export const FiltersPage = () => {
   const [appliedFilters, setAppliedFilters] = useState({
     identifier: null,
     seller_id: null,
@@ -31,19 +35,15 @@ export const FiltersPage = ({ onApply }) => {
   );
   const sellerList = useSelector(selectSellerList);
 
-  
   const { isSuccess: isStatusSuccess } = useGetStatusListQuery(
     { category: category.category },
     { skip: !category.category }
   );
   const statusList = useSelector(selectStatusList);
 
-
-  const handlePriorityModal=()=>{
-    dispatch(onOpen())
-  }
-
- 
+  const handlePriorityModal = () => {
+    dispatch(onOpen());
+  };
 
   const handleSelection = (identifier, option) => {
     const updatedFilters = {
@@ -53,7 +53,6 @@ export const FiltersPage = ({ onApply }) => {
     };
 
     setAppliedFilters(updatedFilters);
-
   };
 
   useEffect(() => {
@@ -87,7 +86,7 @@ export const FiltersPage = ({ onApply }) => {
 
     setSearchParams(searchParams);
     dispatch(setFilters(appliedFilters));
-  }
+  };
 
   return (
     <div className={classes.box}>
@@ -97,7 +96,7 @@ export const FiltersPage = ({ onApply }) => {
         onSelection={(identifier, option) => {
           handleSelection(identifier, option);
         }}
-        selectedId={category.seller_id||""}
+        selectedId={category.seller_id || ""}
       />
       <CustomSelect
         optionData={statusList}
@@ -105,12 +104,15 @@ export const FiltersPage = ({ onApply }) => {
         onSelection={(identifier, option) => {
           handleSelection(identifier, option);
         }}
-        selectedId = {category.status||''}
+        selectedId={category.status || ""}
       />
       <button className={classes.box__btn} onClick={handleApply}>
         Apply
       </button>
-      <button className={`${classes.box__btn} ${classes.box__btn__secondary}`} onClick={handlePriorityModal}>
+      <button
+        className={`${classes.box__btn} ${classes.box__btn__secondary}`}
+        onClick={handlePriorityModal}
+      >
         Set Priority
       </button>
     </div>

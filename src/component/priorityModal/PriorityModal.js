@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -7,7 +7,7 @@ import {
   setSeller_id,
   setLot_id,
 } from "../../store/priorityModalSlice";
-import classes from "./priorityModal.module.css";
+
 
 import {
   selectSellerList,
@@ -17,15 +17,12 @@ import { selectCategoryState } from "../../store/categorySlice";
 import { selectLotList, useGetLotListQuery } from "../../services/lotApiSlice";
 import { useUpdatePriorityMutation } from "../../services/priorityApiSlice";
 import { toast } from "react-toastify";
+import classes from "./priorityModal.module.css";
 
 export default function PriorityModal() {
   const dispatch = useDispatch();
   const { isOpen, seller_id, lot_id } = useSelector(selectPriorityModalState);
   const category = useSelector(selectCategoryState);
-  const [selectedId, setSelectedId] = useState({
-    seller_id: null,
-    lot_id: null,
-  });
 
   const { isSuccess: isSellerSuccess } = useGetSellerListQuery(
     { category: category.category },
@@ -38,43 +35,29 @@ export default function PriorityModal() {
     { skip: !seller_id }
   );
   const lotList = useSelector(selectLotList);
-  console.log(lotList);
 
-  const [updatePriority, { data, error, isSuccess }] =
-    useUpdatePriorityMutation();
+  const [updatePriority] = useUpdatePriorityMutation();
 
   const handleSellerChange = (sellerId) => {
-    // setSelectedId((prev) => ({
-    //   ...prev,
-    //   seller_id: sellerId,
-    // }));
     dispatch(setSeller_id({ seller_id: sellerId }));
+    dispatch(setLot_id({ lot_id: null }));
   };
 
   const handleLotChange = (lotId) => {
-    setSelectedId((prev) => ({
-      ...prev,
-      lot_id: lotId,
-    }));
-
-    console.log(lotId);
+    dispatch(setLot_id({ lot_id: lotId }));
   };
 
   const handleClose = () => {
     dispatch(onClose());
-    setSelectedId({
-      seller_id: null,
-      lot_id: null,
-    });
   };
 
   const handleApply = async () => {
-    dispatch(setLot_id({ lot_id: selectedId.lot_id }));
     const id = toast.loading("Please wait...");
     try {
       await updatePriority({
+        category: category.category,
         seller_id: seller_id,
-        lot_id,
+        lot_id: lot_id,
       }).unwrap();
       toast.update(id, {
         render: "Priority Set successfully",
@@ -82,7 +65,6 @@ export default function PriorityModal() {
         isLoading: false,
         autoClose: 3000,
       });
-      console.log("Update successful");
       dispatch(onClose());
     } catch (error) {
       toast.update(id, {
@@ -91,7 +73,6 @@ export default function PriorityModal() {
         isLoading: false,
         autoClose: 3000,
       });
-      console.error("Update failed:", error);
     }
   };
 
@@ -135,7 +116,7 @@ export default function PriorityModal() {
           <select
             className={classes.selection}
             onChange={(event) => handleLotChange(event.target.value)}
-            value={selectedId.lot_id || ""}
+            value={lot_id || ""}
             disabled={!seller_id}
           >
             <option value="" className={classes.selection__option}>
@@ -156,7 +137,7 @@ export default function PriorityModal() {
           <button
             disabled={!lot_id}
             className={`${classes.box__btns__btn} ${
-              !selectedId.lot_id
+              !lot_id
                 ? classes.box__btns__btn
                 : classes.box__btns__btn__apply
             }`}

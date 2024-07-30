@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./customSelect.module.css";
 
 export const CustomSelect = ({
@@ -7,7 +7,7 @@ export const CustomSelect = ({
   selectedId,
   label,
 }) => {
-  const [currentSeller, setCurrentSeller] = useState(selectedId || "");
+  const [currentSeller, setCurrentSeller] = useState(selectedId);
 
   const handleChange = (event) => {
     const optionId = event.target.value;

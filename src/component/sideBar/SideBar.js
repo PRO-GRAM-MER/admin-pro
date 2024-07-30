@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
+import React, { useRef} from "react";
 import Cookies from "js-cookie";
 import profile from "../../assets/profile_pic.png";
-import dashboard from "../../assets/home.svg";
+import dashboard from "../../assets/icons8-home.svg";
 import prexo from "../../assets/prexo.svg";
 import vrp from "../../assets/vrp.svg";
 import openBox from "../../assets/openBox.svg";

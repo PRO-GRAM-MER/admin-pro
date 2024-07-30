@@ -19,11 +19,11 @@ export const sellerListSlice = apiSlice.injectEndpoints({
       providesTags: (result, error, arg) => {
         if (!result) {
           return [
-            { type: `${arg.category}sellers`, id: `${arg.category}sellers` },
+            { type: `${arg.category}sellers`, id: `${arg.category}sellerList` },
           ];
         }
         return [
-          { type: `${arg.category}sellers`, id: `${arg.category}sellers` },
+          { type: `${arg.category}sellers`, id: `${arg.category}sellerList` },
           ...result.ids.map((id) => ({ type: `${arg.category}sellers`, id })),
         ];
       },

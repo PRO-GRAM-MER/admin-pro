@@ -6,8 +6,11 @@ import {
   selectCategoryList,
   useGetCategoryListQuery,
 } from "../../services/categoryApiSlice";
-import Cookies from "js-cookie";
-import { selectCategoryState, setCategory } from "../../store/categorySlice";
+import {
+  clearFilters,
+  selectCategoryState,
+  setCategory,
+} from "../../store/categorySlice";
 import { TablePage } from "./TablePage";
 import { FiltersPage } from "../filters/FiltersPage";
 import classes from "./categoryPage.module.css";
@@ -28,15 +31,9 @@ export const CategoryPage = () => {
   const tableData = useSelector(selectCategoryList);
 
   useEffect(() => {
-    if (error) {
-      toast.error(error.data.detail, { pauseOnFocusLoss: false });
-    }
-    dispatch(
-      setCategory({
-        category: category,
-      })
-    );
-  }, [category, dispatch, error, tableData.length]);
+    dispatch(setCategory({ category }));
+    dispatch(clearFilters());
+  }, [category, dispatch]);
 
   return isSuccess ? (
     <div className={classes.box}>
